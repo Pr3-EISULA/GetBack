@@ -4,7 +4,7 @@
    - main.cpp 
    - Game( .h, .cpp): base class structure of the game
    - MainMenu( .h, .cpp): Class for the main menu
-   - Some sprites: 
+   - Some sprites:
         · bg1.png: First scene background
         · caveEntrance.png: Sprite for the entrance to the cave in the first scene
         · p1_N.png: Character 1
