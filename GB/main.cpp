@@ -57,8 +57,6 @@ int main()
 
 
     // Main view
-    //sf::View view;
-    //view.setViewport(sf::FloatRect(0,0,1,1));
 
     // Rock 1
     fallingRock *rock1 = new fallingRock;
@@ -148,8 +146,6 @@ int main()
         }
 
         window.clear();
-
-        window.setView(view);
 
         p1->update();
         p1->updatePosition();
