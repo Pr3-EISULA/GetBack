@@ -2,87 +2,134 @@
 
 player::player()
 {
-  rect.setSize(sf::Vector2f(16,16));
-  rect.setPosition(8,300);
-  rect.setFillColor(sf::Color::Blue);
-  sprite.setTextureRect(sf::IntRect( 0, 0, 16, 16));
+  rect.setSize(sf::Vector2f(40, 50));
+  rect.setPosition(/*64*/500,640);
+
+  Collision::CreateTextureAndBitmask(texture, "bottomHiker.png");
+
+  sprite.setTexture(texture);
+  sprite.setOrigin(20,25);
+  sprite.setTextureRect(sf::IntRect( 0, 0, 40, 50));
+
+  topTexture.loadFromFile("player-walking-2.png");
+
+  topSprite.setTexture(topTexture);
+  topSprite.setOrigin(20,25);
+  topSprite.setTextureRect(sf::IntRect( 0, 0, 40, 50));
 }
 
 void player::update()
 {
   sprite.setPosition(rect.getPosition());
-  sprite.setRotation(rect.getRotation());
-  //sprite.setTextureRect(sf::IntRect(0,0,16,16));
-}
+  sprite.setScale(rect.getScale());
 
-void player::updatePosition()
-{
-  if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W) || 
-       sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
-  {
-    rect.move(0, -moveSpeed);
-    rect.setRotation(180);
-    sprite.setTextureRect( sf::IntRect( 16 * walkingAnimationFrame, 0, 16, 16));
-  }
-  if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) || 
-       sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
-  {
-    rect.move(0, moveSpeed);
-    rect.setRotation(0);
-    sprite.setTextureRect( sf::IntRect( 16 * walkingAnimationFrame, 0, 16, 16));
-  }
-  if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) || 
-       sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
-  {
-    rect.move(moveSpeed, 0);
-    rect.setRotation(270);
-    sprite.setTextureRect( sf::IntRect( 16 * walkingAnimationFrame, 0, 16, 16));
-  }
-  if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) || 
-       sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
-  {
-    rect.move(-moveSpeed, 0);
-    rect.setRotation(90);
-    sprite.setTextureRect( sf::IntRect( 16 * walkingAnimationFrame, 0, 16, 16));
-  }
+  topSprite.setPosition(rect.getPosition());
+  topSprite.setScale(rect.getScale());
+  moveSpeed = baseMoveSpeed;
 
-  if ( (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Up))&&
-       (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
-    rect.setRotation(225);
-  if ( (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Up))&&
-       (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
-    rect.setRotation(135);
-  if ( (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))&&
-       (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
-    rect.setRotation(315);
-  if ( (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))&&
-       (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || 
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
-    rect.setRotation(45);
-  
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
-      sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
-      sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-      sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+  if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W) )
   {
-    counter++;
-    if (counter > 9)
-      counter = 0;
-    if(counter%10 == 0)
-      walkingAnimationFrame++;
+    if (canMoveUp)
+      {
+        rect.move(0, -moveSpeed);
+        direction = 1;
 
-    if (walkingAnimationFrame > 2)
-      walkingAnimationFrame = 1;
+        canMoveUp = true;
+        canMoveDown = true;
+        canMoveLeft = true;
+        canMoveRight = true;
+      }
+    sprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 150, 40, 50));
+    topSprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 150, 40, 50));
+  }
+  else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) )
+  {
+    if (canMoveDown)
+      {
+        rect.move(0,moveSpeed);
+        direction = 2;
+
+        canMoveUp = true;
+        canMoveDown = true;
+        canMoveLeft = true;
+        canMoveRight = true;
+      }
+    sprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 0, 40, 50));
+    topSprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 0, 40, 50));
+  }
+  else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) )
+  {
+    if (canMoveRight)
+      {
+        rect.move(moveSpeed,0);
+        direction = 3;
+        
+        canMoveUp = true;
+        canMoveDown = true;
+        canMoveLeft = true;
+        canMoveRight = true;
+      }
+    sprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 100, 40, 50));
+    topSprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 100, 40, 50));
+  }
+  else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) )
+  {
+    if (canMoveLeft)
+      {
+        rect.move(-moveSpeed,0);
+        direction = 4;
+
+        canMoveUp = true;
+        canMoveDown = true;
+        canMoveLeft = true;
+        canMoveRight = true;
+      }
+    sprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 50, 40, 50));
+    topSprite.setTextureRect( sf::IntRect( 40*walkingAnimationFrame, 50, 40, 50));
   }
   else
-    sprite.setTextureRect(sf::IntRect( 0, 0, 16, 16));
+  {
+    direction = 0;
+  }
+  
+  if ( direction != 0)
+  {
+    // Change the spriteframe every 10 gameframes
+    frameCounter++;
+    if (frameCounter > 9)
+      frameCounter = 0;
+    if(frameCounter%10 == 0)
+      walkingAnimationFrame++;
+
+    if (walkingAnimationFrame > 3)
+      walkingAnimationFrame = 0;
+  }
+  else
+  {
+    switch(direction)
+    {
+    case 1:
+    case 8:
+      sprite.setTextureRect( sf::IntRect( 0, 150, 40, 50));
+      topSprite.setTextureRect( sf::IntRect( 0, 150, 40, 50));
+      break;
+    case 2:
+    case 6:
+    case 7:
+      sprite.setTextureRect( sf::IntRect( 0, 0, 40, 50));
+      topSprite.setTextureRect( sf::IntRect( 0, 0, 40, 50));
+      break;
+    case 3:
+    case 5:
+      sprite.setTextureRect( sf::IntRect( 0, 100, 40, 50));
+      topSprite.setTextureRect( sf::IntRect( 0, 100, 40, 50));  
+      break;
+    case 4:
+      sprite.setTextureRect( sf::IntRect( 0, 50, 40, 50));
+      topSprite.setTextureRect( sf::IntRect( 0, 50, 40, 50));
+      break;
+    }
+  }
   
   
 }

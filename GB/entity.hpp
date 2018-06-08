@@ -3,12 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Collision.hpp"
+
 class entity
 {
 public:
   sf::RectangleShape rect;
-  sf::Texture texture;
+  sf::Texture texture, textureTest;
   sf::Sprite sprite;
+  sf::Text text;
 
 
   entity();

@@ -16,6 +16,7 @@ void mainMenu::update()
     std::cout << "Click izquierdo presionado :)" << std::endl;
     std::cout << sf::Mouse::getPosition().x << " - ";
     std::cout << sf::Mouse::getPosition().y << std::endl;
+    newGame = true;
     showMainMenu = false;
   }
 

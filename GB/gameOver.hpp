@@ -1,5 +1,5 @@
-#ifndef MAIN_MENU_HPP
-#define MAIN_MENU_HPP
+#ifndef GAMEOVER_MENU_HPP
+#define GAMEOVER_MENU_HPP
 
 #include <iostream>
 
@@ -7,16 +7,18 @@
 
 #include "entity.hpp"
 
-class mainMenu: public entity
+class gameOver: public entity
 {
 public:
-  bool newGame = false;
+  sf::Font font;
   bool continueGame = false;
-  bool showMainMenu = true;
+  bool mainMenu = false;
+  
+  bool showGameOver = false;
   sf::Vertex A, B, C, D;
   sf::Vertex E, F, G, H;
 
-  mainMenu();
+  gameOver();
   void update();
 };
 #endif
